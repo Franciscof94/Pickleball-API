@@ -10,7 +10,6 @@ export class ShiftsController {
   async createShift(@Res() response, @Body() createShiftDto: CreateShiftstDto) {
     try {
     
-      console.log(createShiftDto)
 
       const newShift = await this.shiftService.createShift(createShiftDto);
       return response.status(HttpStatus.CREATED).json({
