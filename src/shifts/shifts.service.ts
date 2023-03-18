@@ -6,11 +6,30 @@ import { IShifts } from './interfaces/shifts.interface';
 
 @Injectable()
 export class ShiftsService {
-    constructor(@InjectModel('Shifts') private shiftModel:Model<IShifts>) { }
+  constructor(@InjectModel('Shifts') private shiftModel: Model<IShifts>) {}
 
-    async createShift(createShiftDto: CreateShiftstDto): Promise<any> {
-        const newShift = await new this.shiftModel(createShiftDto);
-        return newShift
-     }
+  async createShift(createShiftDto: CreateShiftstDto): Promise<IShifts> {
+    const newShift = new this.shiftModel(createShiftDto);
+    return newShift.save();
+  }
 
+  async getAllShifts(): Promise<IShifts[]> {
+    return this.shiftModel.find().exec();
+  }
+
+  async findShiftsByUser(email: { email: string }): Promise<IShifts[]> {
+    if (!email) {
+      throw Error('Email is required');
+    }
+    return this.shiftModel.find({ email: email.email }).exec();
+  }
+
+  async deleteShift(email: string, dateAndTime: string): Promise<any> {
+    if (!email && dateAndTime) {
+      throw Error('Email and date are required');
+    }
+    return this.shiftModel
+      .findOneAndDelete({ $and: [{ email }, { dateAndTime }] })
+      .exec();
+  }
 }

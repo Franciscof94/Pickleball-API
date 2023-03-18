@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res, Get } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query, Param, Delete } from '@nestjs/common';
 import { CreateShiftstDto } from './dto/create-shift.dto';
 import { ShiftsService } from './shifts.service';
 
@@ -7,22 +7,35 @@ export class ShiftsController {
   constructor(private readonly shiftService: ShiftsService) {}
 
   @Post()
-  async createShift(@Res() response, @Body() createShiftDto: CreateShiftstDto) {
-    try {
-    
+  async createShift(@Body() createShiftDto: CreateShiftstDto) {
+    return this.shiftService.createShift(createShiftDto);
+  }
 
-      const newShift = await this.shiftService.createShift(createShiftDto);
-      return response.status(HttpStatus.CREATED).json({
-        message: 'Shift has been created successfully',
-        newShift,
-      });
-    } catch (err) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: 400,
-        message: 'Error: Shift not created!',
-        error: 'Bad Request',
-      });
+  @Get()
+  findAllShifts() {
+    try {
+      return this.shiftService.getAllShifts();
+    } catch (error) {
+      throw Error('An error occurred while getting the turns');
     }
   }
 
+  @Get(':email')
+  findShiftsByUser(@Param() email: { email: string }) {
+    try {
+      return this.shiftService.findShiftsByUser(email);
+    } catch (error) {
+      throw Error('An error occurred while getting the turns');
+    }
+  }
+
+  @Delete('')
+  deleteShift(@Body() userShift: { email: string, dateAndTime: string }) {
+    const { email, dateAndTime } = userShift
+    try {
+      return this.shiftService.deleteShift(email, dateAndTime);
+    } catch (error) {
+      throw Error('An error occurred while getting the turns');
+    }
+  }
 }

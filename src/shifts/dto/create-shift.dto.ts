@@ -13,7 +13,6 @@ export class CreateShiftstDto {
   @IsString()
   @IsNotEmpty()
   email: string;
-
   
   @Transform(({ value }) => new Date(value))
   dateAndTime: Date;
