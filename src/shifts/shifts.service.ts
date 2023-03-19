@@ -13,8 +13,14 @@ export class ShiftsService {
     return newShift.save();
   }
 
-  async getAllShifts(): Promise<IShifts[]> {
-    return this.shiftModel.find().exec();
+  async getAllShifts(): Promise<{ dateAndTime: Date }[]> {
+    const allShifts = await this.shiftModel.find().exec();
+
+    return allShifts.map((shift) => {
+      return {
+        dateAndTime: shift.dateAndTime,
+      };
+    });
   }
 
   async findShiftsByUser(email: { email: string }): Promise<IShifts[]> {
