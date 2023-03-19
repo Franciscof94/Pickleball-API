@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Get, Query, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Query,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CreateShiftstDto } from './dto/create-shift.dto';
 import { ShiftsService } from './shifts.service';
 
@@ -8,7 +16,11 @@ export class ShiftsController {
 
   @Post()
   async createShift(@Body() createShiftDto: CreateShiftstDto) {
-    return this.shiftService.createShift(createShiftDto);
+    try {
+      return this.shiftService.createShift(createShiftDto);
+    } catch (error) {
+      throw Error('An error occurred');
+    }
   }
 
   @Get()
@@ -30,8 +42,8 @@ export class ShiftsController {
   }
 
   @Delete('')
-  deleteShift(@Body() userShift: { email: string, dateAndTime: string }) {
-    const { email, dateAndTime } = userShift
+  deleteShift(@Body() userShift: { email: string; dateAndTime: string }) {
+    const { email, dateAndTime } = userShift;
     try {
       return this.shiftService.deleteShift(email, dateAndTime);
     } catch (error) {
