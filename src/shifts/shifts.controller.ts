@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CreateShiftstDto } from './dto/create-shift.dto';
+import { CreateShiftstDto } from '../dto/create-shift.dto';
 import { ShiftsService } from './shifts.service';
 
 @Controller('shifts')

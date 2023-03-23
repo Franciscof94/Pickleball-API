@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ShiftSchema } from './schemas/shifts.schema';
+import { MailModule } from 'src/mail/mail.module';
+import { ShiftSchema } from '../schemas/shifts.schema';
 import { ShiftsController } from './shifts.controller';
 import { ShiftsService } from './shifts.service';
 
